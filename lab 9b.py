@@ -15,6 +15,7 @@ Created on Fri May 17 22:47:45 2024
 # All codes in this assignment are Professor's Levy model.
 
 from numpy import random, mean
+import os
 
 params = {'world_size':(2,2),
           'num_agents':3,
@@ -43,7 +44,7 @@ class Agent():
                     self.world.grid[patch] = self         #update the grid
                     agent_moved = True                    
                     return print('I am unhappy, that is why I moved')             
-            if i_moved is False:
+            if agent_moved is False:
                 return print('I am unhappy, but I could not moved')  
         else:
             return print('I am happy. I do not need to move')  
@@ -219,7 +220,8 @@ class World():
 
         if to_file:
             out_path = self.params['out_path']
-            with open(out_path, 'w') as f:
+            myagent_path = os.path.join( out_path, 'myagent')
+            with open(myagent_path, 'w') as f:
                 headers = 'turn,integration,num_happy,num_moved,num_stayed\n'
                 f.write(headers)
                 for i in range(len(reports['log_of_happy'])):
@@ -232,4 +234,11 @@ class World():
                                      ])
                     f.write(line)
             print('\nResults written to:', out_path)
+
+
+
+# Initializing the world
+
+world = World(params)
+world.run()
 
